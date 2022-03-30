@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <title>Teste de PHP</title>
+    <style>
+        #retorno {
+            font-size: 17px;
+            margin-top: 10px;
+            font-style: italic;
+            font-weight:550;
+        }
+        .erro {
+            color:firebrick;
+        }
+        .sucesso {
+            color: darkgreen;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            $("#pesquisacep").click(function (e) {
+                e.preventDefault(); 
+                var inputval = $("#addsearch").val();
+                if (!inputval) {
+                    $("#retorno").text("Nada foi digitado!");
+                    $("#retorno").removeAttr('hidden');
+                    $("#retorno").addClass("erro");
+                } else {
+                    $.post("consulta.php", { valor: inputval }, function (data) {                        
+                        if (data === true) {
+                            $("#retorno").text("Deu certo!");
+                            $("#retorno").removeAttr('hidden');
+                            $("#retorno").addClass("sucesso");
+                        } else {
+                            $("#retorno").text("Deu errado!");
+                            $("#retorno").removeAttr('hidden');
+                            $("#retorno").addClass("erro");
+                        }
+                        
+                    }
+                    );                    
+                }
+
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Consulta de CEP</h1>
+        <p class="lead" style="color: Grey;">Digite o endereço (sem n° ou complementos) e descubra o CEP desejado.</p>
+        <form class="form-inline">
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="Rua Borboletas Psicodélicas" id="addsearch" style="width: 400px">
+            </div>
+            <button type="button" class="btn btn-info" id="pesquisacep">Buscar CEP</button>
+            <p hidden id="retorno"></p>
+        </form>
+    </div>
+</body>
+</html>
